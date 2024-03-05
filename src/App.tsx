@@ -3,7 +3,6 @@ import {Categories} from "./recipes/Categories";
 import Recipe from "./recipes/Recipe";
 import RecipeForm from "./recipes/RecipeForm";
 import Login from "./security/Login";
-//import Logout from "./security/_Logout";
 import Layout from "./Layout";
 import Home from "./Home";
 import "./App.css";

@@ -16,6 +16,7 @@ module.exports = {
     ],
     "@typescript-eslint/ban-ts-comment": "off",
     "no-unused-vars": "off", // This disables the rule for JavaScript
-    "@typescript-eslint/no-unused-vars": "off" // This disables the rule for TypeScript
+    "@typescript-eslint/no-unused-vars": "off", // This disables the rule for TypeScript
+    "react-hooks/exhaustive-deps": "off",
   },
 }

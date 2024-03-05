@@ -2,14 +2,16 @@
  * Utility Method to create options for a fetch call
  * @param method GET, POST, PUT, DELETE
  * @param body  The request body (only relevant for POST and PUT)
+ * @param requiresAuth boolean to determine if the call requires authentication
  * @returns 
  */
-export function makeOptions(method: string, body: object | null): RequestInit {
+export function makeOptions(method: string, body: object | null, requiresAuth?:boolean): RequestInit {
   const opts: RequestInit = {
     method: method,
     headers: {
       "Content-type": "application/json",
       Accept: "application/json",
+      Authorization: requiresAuth ? `Bearer ${localStorage.getItem("token")}` : ""
     },
   };
   if (body) {

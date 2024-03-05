@@ -1,12 +1,14 @@
 import {useParams} from "react-router-dom";
-import {getRecipe, Recipe as ApiRecipe} from "../services/apiFacade";
+import type {IRecipe} from "../hooks/useRecipes.ts";
 import {useEffect, useState} from "react";
+import useRecipes from "../hooks/useRecipes.ts";
 
 export default function Recipe() {
 	const {id} = useParams();
+	const {getRecipe} = useRecipes();
 	console.log("id", id);
 
-	const [recipe, setRecipe] = useState<ApiRecipe | null>(null);
+	const [recipe, setRecipe] = useState<IRecipe | null>(null);
 	useEffect(() => {
 		getRecipe(Number(id)).then((res) => setRecipe(res));
 	}, [id]);

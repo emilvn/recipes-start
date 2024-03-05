@@ -1,23 +1,16 @@
 import {Link, useSearchParams} from "react-router-dom";
 import "./RecipesLayout.css";
-import {useEffect, useState} from "react";
-import {getRecipes, Recipe as APIRecipe} from "../services/apiFacade";
+import {useState} from "react";
 import {useAuth} from "../security/AuthProvider";
+import useRecipes from "../hooks/useRecipes.ts";
 
 export default function RecipeList() {
 	const [queryString] = useSearchParams();
 	const initialCategory = queryString.get("category");
-	const [recipes, setRecipes] = useState<Array<APIRecipe>>([]);
 	const [category, setCategory] = useState<string | null>(initialCategory);
-	const [error, setError] = useState("");
+	const [error] = useState("");
 	const auth = useAuth();
-
-	useEffect(() => {
-		getRecipes(category)
-			.then((res) => setRecipes(res))
-			.catch(() => setError("Error fetching recipes, is the server running?"));
-
-	}, [category]);
+	const {recipes} = useRecipes(category);
 
 	const recipeListItems = recipes.map((recipe) => {
 		return (
@@ -42,7 +35,6 @@ export default function RecipeList() {
 					<button
 						onClick={() => {
 							setCategory(null);
-							getRecipes(null).then((res) => setRecipes(res));
 						}}
 					>
 						Clear

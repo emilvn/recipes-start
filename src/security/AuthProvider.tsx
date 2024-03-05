@@ -1,5 +1,5 @@
 import { createContext, useState, ReactNode } from "react";
-import { fakeAuthProvider, User } from "../services/authFacade";
+import { authProvider, User } from "../services/authFacade";
 import { useContext } from "react";
 import { LoginResponse, LoginRequest } from "../services/authFacade";
 
@@ -22,7 +22,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
 	const [username, setUsername] = useState<string | null>(initialUsername);
 
 	const signIn = async (user_: LoginRequest) => {
-		return fakeAuthProvider.signIn(user_).then((user) => {
+		return authProvider.signIn(user_).then((user) => {
 			setUsername(user.username)
 			localStorage.setItem("username",user.username)
 			localStorage.setItem("roles",JSON.stringify(user.roles))
@@ -42,7 +42,24 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
 
 
 	function isLoggedIn() {
-		return username != null;
+		const token = localStorage.getItem("token");
+		if(!token){
+			return false;
+		}
+		const jwtData = JSON.parse(atob(token.split(".")[1]));
+		const exp = jwtData.exp;
+
+		if(!exp){
+			return false;
+		}
+
+		const expirationDate = new Date(exp*1000);
+		if(expirationDate < new Date()){
+			signOut();
+			return false;
+		}
+
+		return username !== null;
 	}
 
 

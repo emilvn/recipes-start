@@ -1,6 +1,7 @@
 import "./RecipeForm.css";
 import {useEffect, useState} from "react";
-import {addRecipe, deleteRecipe, getCategories, Recipe} from "../services/apiFacade";
+import {getCategories} from "../services/apiFacade";
+import useRecipes, {IRecipe} from "../hooks/useRecipes";
 import {useLocation} from "react-router-dom";
 
 const EMPTY_RECIPE = {
@@ -17,7 +18,8 @@ const EMPTY_RECIPE = {
 export default function RecipeForm() {
 	const [categories, setCategories] = useState([""]);
 	const recipeToEdit = useLocation().state || null;
-	const [formData, setFormData] = useState<Recipe>(recipeToEdit || EMPTY_RECIPE);
+	const [formData, setFormData] = useState<IRecipe>(recipeToEdit || EMPTY_RECIPE);
+	const {addRecipe, deleteRecipe} = useRecipes();
 
 	useEffect(() => {
 		getCategories().then((res) => setCategories(res));
