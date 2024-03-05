@@ -1,3 +1,4 @@
+
 /**
  * Utility Method to create options for a fetch call
  * @param method GET, POST, PUT, DELETE
@@ -29,6 +30,9 @@ export async function handleHttpErrors(res:Response) {
     const errorResponse = await res.json();
     const msg = errorResponse.message ? errorResponse.message:"No details provided"
     throw new Error(msg)
+  }
+  if(res.status === 204){
+    return res;
   }
  return res.json()
 }

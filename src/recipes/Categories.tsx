@@ -1,22 +1,17 @@
-import {useEffect, useState} from "react";
-import {addCategory, getCategories} from "../services/apiFacade";
+import {useState} from "react";
 import {Link} from "react-router-dom";
 import {useAuth} from "../security/AuthProvider.tsx";
+import useCategories from "../hooks/useCategories.ts";
 
 export const Categories = () => {
 	const auth = useAuth();
-	const [categories, setCategories] = useState<Array<string>>([]);
+	const {categories, addCategory} = useCategories();
 	const [newCategory, setNewCategory] = useState<string>("");
-
-	useEffect(() => {
-		getCategories().then((res) => setCategories(res));
-	}, []);
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		const category = (await addCategory(newCategory)).name;
+		const category = await addCategory(newCategory);
 		if(category){
-			setCategories([...categories, category]);
 			setNewCategory("");
 		}
 	}
@@ -48,6 +43,3 @@ export const Categories = () => {
 		</>
 	);
 };
-
-export const Desktops = () => <h3>Desktop PC Page</h3>;
-export const Laptops = () => <h3>Laptops Page</h3>;

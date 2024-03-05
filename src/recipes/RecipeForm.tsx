@@ -1,8 +1,8 @@
 import "./RecipeForm.css";
-import {useEffect, useState} from "react";
-import {getCategories} from "../services/apiFacade";
+import {useState} from "react";
 import useRecipes, {IRecipe} from "../hooks/useRecipes";
 import {useLocation} from "react-router-dom";
+import useCategories from "../hooks/useCategories.ts";
 
 const EMPTY_RECIPE = {
 	id: null,
@@ -16,14 +16,10 @@ const EMPTY_RECIPE = {
 };
 
 export default function RecipeForm() {
-	const [categories, setCategories] = useState([""]);
+	const {categories} = useCategories();
 	const recipeToEdit = useLocation().state || null;
 	const [formData, setFormData] = useState<IRecipe>(recipeToEdit || EMPTY_RECIPE);
 	const {addRecipe, deleteRecipe} = useRecipes();
-
-	useEffect(() => {
-		getCategories().then((res) => setCategories(res));
-	}, []);
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const {name, value} = e.target;
@@ -42,9 +38,7 @@ export default function RecipeForm() {
 
 	const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
-		const addedOrEdited = formData.id ? "edited" : "added";
 		const newRecipe = await addRecipe(formData);
-		alert(`Recipe ${addedOrEdited} successfully!`);
 		setFormData({ ...EMPTY_RECIPE });
 		console.log("newRecipe", newRecipe);
 	};
