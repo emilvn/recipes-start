@@ -8,7 +8,7 @@ export default function Recipe() {
 	const {getRecipe} = useRecipes();
 	console.log("id", id);
 
-	const [recipe, setRecipe] = useState<IRecipe | null>(null);
+	const [recipe, setRecipe] = useState<IRecipe | undefined>();
 	useEffect(() => {
 		getRecipe(Number(id)).then((res) => setRecipe(res));
 	}, [id]);
