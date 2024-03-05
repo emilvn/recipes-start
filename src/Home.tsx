@@ -1,23 +1,12 @@
-import { useEffect, useState } from "react";
-import { getInfo, Info } from "./services/apiFacade";
+import useInfo from "./hooks/useInfo.ts";
 
 export default function Home() {
-  const [info, setInfo] = useState<Info | null>(null);
-  const [err, setErr] = useState("");
-  useEffect(() => {
-    setErr("");
-    getInfo()
-      .then((data) => setInfo(data))
-      .catch(() => {
-        setErr("Error fetching info from backend");
-      });
-  }, []);
+  const info = useInfo();
 
   return (
     <>
       <h2>Home</h2>
       <p>Welcome to our homepage! (mainly meant to learn React Router)</p>
-      <p style={{ color: "red" }}>{err}</p>
       <img style={{ width: 200 }} src="./logo.png" alt="logo" />
       {info && (
         <>
