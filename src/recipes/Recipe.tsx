@@ -6,7 +6,6 @@ import useRecipes from "../hooks/useRecipes.ts";
 export default function Recipe() {
 	const {id} = useParams();
 	const {getRecipe} = useRecipes();
-	console.log("id", id);
 
 	const [recipe, setRecipe] = useState<IRecipe | undefined>();
 	useEffect(() => {

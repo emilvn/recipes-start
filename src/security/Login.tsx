@@ -3,6 +3,7 @@ import { useAuth } from "./AuthProvider";
 import { User } from "../services/authFacade";
 import "./login.css";
 import {useLocation, useNavigate} from "react-router-dom";
+import toast from "react-hot-toast";
 
 const Login = () => {
   const [user, setUser] = useState({ username: "", password: "" });
@@ -10,8 +11,6 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const auth = useAuth();
-
-  const [err, setErr] = useState(null);
 
   const from = location.state?.from?.pathname || "/";
 
@@ -21,15 +20,13 @@ const Login = () => {
     const formData = new FormData(event.currentTarget);
     const user = Object.fromEntries(formData) as unknown as User;
 
-    setErr(null);
-    console.log(err);
     auth
       .signIn(user)
       .then(() => {
         navigate(from, { replace: true });
       })
       .catch((err) => {
-        setErr(err);
+        toast.error(err.message);
       });
   }
 

@@ -38,9 +38,8 @@ export default function RecipeForm() {
 
 	const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
-		const newRecipe = await addRecipe(formData);
+		void addRecipe(formData);
 		setFormData({ ...EMPTY_RECIPE });
-		console.log("newRecipe", newRecipe);
 	};
 
 	return (
